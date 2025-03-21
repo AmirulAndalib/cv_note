@@ -13,6 +13,7 @@
 - [四，Docker 镜像命令](#四docker-镜像命令)
 - [五，Docker 容器命令](#五docker-容器命令)
   - [5.1，docker run 命令](#51docker-run-命令)
+  - [5.2 查看、停止、启动和删除容器](#52-查看停止启动和删除容器)
 - [六，参考资料](#六参考资料)
 
 ## 一，Docker 简介
@@ -70,6 +71,9 @@ Docker 作为一种**新的虚拟化技术**，跟传统的虚拟化技术相比
 **Docker** 镜像并非是像一个 `ISO` 那样的打包文件，镜像只是一个虚拟的概念，其实际体现并非由一个文件组成，而是由一组文件系统组成，或者说，由多层文件系统联合组成。**其被设计为分层存储的架构，镜像构建时，会一层层构建，前一层是后一层的基础**。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。分层存储的特征还使得镜像的复用、定制变的更为容易。甚至可以用之前构建好的镜像作为基础层，然后进一步添加新的层，以定制自己所需的内容，构建新的镜像。
 
 ### 2.2，容器
+
+**容器（Container）：一个运行时实例，它基于镜像（Image）创建，并提供隔离的运行环境**。
+
 镜像（`Image`）和容器（`Container`）的关系，类似面向对象程序设计中的**类和实例**的关系。可以把 Docker容器(Container) 看做是一个简易版的 Linux 环境（包括 root 用户权限、进程空间、用户空间和网络空间等）和运行在其中的应用程序。它可以被启动、开始、停止、 删除。
 
 容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的 命名空间。因此容器可以拥有自己的 root 文件系统、自己的网络配置、自己的进程空间，甚至自己的用户 ID 空间。容器内的进程是运行在一个隔离的环境里，使用起来，就好像是在一个独立于宿主的系统下操作一样。
@@ -250,7 +254,26 @@ $ docker restart [容器ID]
 
 ![image](../../data/images/docker/DN6phxbTI-qJqDunkIdOgz6Gte1a--lUTVsIW5s8HZo.png)
 
-3，使用 `docker ps` 命令，**查看正在运行的 docker**。
+3, **进入容器内部**: 可以使用 `docker exec` 命令在运行中的容器中启动一个交互式 shell：
+
+```bash
+docker exec -it mynginx /bin/bash
+```
+
+### 5.2 查看、停止、启动和删除容器
+
+```bash
+# 查看正在运行的容器
+docker ps
+# 查看所有容器（包括停止的）
+docker ps -a
+# 启动已存在的容器
+docker start container_name
+# 停止容器
+docker stop container_name
+# 删除容器（容器必须处于停止状态）
+docker rm container_name
+```
 
 ![image](../../data/images/docker/EJgGulpCOPeBpHrsbzfdNrTuBYAKCaQGoLitWluROl8.png)
 
